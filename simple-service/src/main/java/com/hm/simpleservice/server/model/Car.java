@@ -1,22 +1,45 @@
-package com.hm.taxi;
+package com.hm.simpleservice.server.model;
 
 
 public class Car {
-    String latitudeStart;
-    String longitudeStart;
-    String latitudeFinish;
-    String longigudeFinish;
-    Status status;
+	
+	private int id;
+	
+	private String startAddress;
+	private String targetAddress;
+	private String latitudeStart;
+	private String longitudeStart;
+	private String latitudeFinish;
+	private String longigudeFinish;
+	private State state;
+	private int travelTime; //in millis
+	private int destinationTime; //in millis
     
+	public Car(int id) {
+		this.id = id;
+		this.state = State.INACTIVE;
+		this.travelTime = 0;
+		this.destinationTime = 0;
+	}
 
-    Car(String originalAddress, String targetAddress) {
-       
-        this.status = Status.IN_TIME;
+    public Car(int id, String startAddress, String targetAddress) {
+    	this.id = id;
+    	this.startAddress = startAddress;
+    	this.targetAddress = targetAddress;
+    	this.state = State.IN_TIME;
     }
     
-    public enum Status {
-        INACTIVE, FREE, IN_TIME, LATE
-    };
+    public void updateTime() {
+    	//TODO
+    }
+    
+    public void setStartAddress(String startAddress) {
+    	this.startAddress = startAddress;
+    }
+    
+    public void setDestinationAddress(String destinationAddress) {
+    	this.targetAddress = destinationAddress;
+    }
 
     public void setLatitude(String latitude) {
         this.latitudeStart = latitude;
@@ -26,13 +49,36 @@ public class Car {
         this.longitudeStart = longitude;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setState(State status) {
+        this.state = status;
         
     }
+    
+    public int getTravelTime() {
+    	return this.travelTime;
+    }
 
-    Car car1 = new Car("500", "400");
-    Car car2 = new Car("200", "600");
-    Car car3 = new Car("1000", "2000");
+	public int getID() {
+		return this.id;
+	}
+	
+	public State getState() {
+		return this.state;
+	}
+	
+	public void setDestinationTime(int destinationTime) {
+		this.destinationTime = destinationTime;
+	}
+	
+	public void setTravelTime(int travelTime) {
+		this.travelTime = travelTime;
+	}
+	
+	public int getStartTime() {
+		return destinationTime - travelTime;
+	}
 
+    public enum State {
+        INACTIVE, FREE, IN_TIME, LATE
+    };
 }
