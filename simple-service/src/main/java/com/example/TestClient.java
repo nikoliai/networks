@@ -14,8 +14,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.hm.taxi.Server;
+
 @Path("mytest/{houseNr1}/{street1}/{city1}/{country1}/{houseNr2}/{street2}/{city2}/{country2}")
-// @Path("mytest/{latStart}/{longStart}/{latFinish}/{longFinish}")
 
 public class TestClient {
 
@@ -37,6 +38,8 @@ public class TestClient {
         String request1 = requestGetCoordinates + houseNr1 + "+" + street1 + "+" + city1 + "+" + country1;
         String request2 = requestGetCoordinates + houseNr2 + "+" + street2 + "+" + city2 + "+" + country2;
 
+        Server server = new Server();
+        
         Client client = ClientBuilder.newClient();
 
         // System.out.println(request1);
