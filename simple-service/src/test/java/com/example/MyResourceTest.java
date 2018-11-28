@@ -19,7 +19,7 @@ public class MyResourceTest {
     @Before
     public void setUp() throws Exception {
         // start the server
-        server = Main.startServer();
+        server = Main.startRessourceController();
         // create the client
         Client c = ClientBuilder.newClient();
 

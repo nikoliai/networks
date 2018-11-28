@@ -56,7 +56,7 @@ public class HueController {
 		return response.toString();
 	}
 	
-	enum HueColors {
+	public enum HueColors {
 
 		GREEN("\"sat\":254, \"bri\":254,\"hue\":20000"), ORANGE("\"sat\":254, \"bri\":254,\"hue\":4000"), RED("\"sat\":254, \"bri\":254,\"hue\":0000");
 		
@@ -71,7 +71,7 @@ public class HueController {
 		}
 	}
 	
-	enum HueState {
+	public enum HueState {
 		
 		ON("\"on\":true"), OFF("\"on\":false");
 		
