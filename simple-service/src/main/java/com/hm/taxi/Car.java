@@ -7,6 +7,8 @@ public class Car {
     String longitudeStart;
     String latitudeFinish;
     String longigudeFinish;
+    int travelTime;
+    int destinationTime;
     Status status;
     String id;
 
@@ -73,9 +75,47 @@ public class Car {
                 + " lonfin: " + longigudeFinish + " status: "+ this.status.getStatus();
 
     }
+    
+    
 
-    public String getId() {
+    /**
+	 * @return the travelTime
+	 */
+	public int getTravelTime() {
+		return travelTime;
+	}
+
+	/**
+	 * @param travelTime the travelTime to set
+	 */
+	public void setTravelTime(int travelTime) {
+		this.travelTime = travelTime;
+	}
+
+	/**
+	 * @return the destinationTime
+	 */
+	public int getDestinationTime() {
+		return destinationTime;
+	}
+
+	/**
+	 * @param destinationTime the destinationTime to set
+	 */
+	public void setDestinationTime(int destinationTime) {
+		this.destinationTime = destinationTime;
+	}
+
+	public String getId() {
         return id;
     }
+
+	public String getLongitudeDestination() {
+		return this.longigudeFinish;
+	}
+
+	public String getLatitudeDestination() {
+		return this.latitudeFinish;
+	}
 
 }
