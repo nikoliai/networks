@@ -19,8 +19,7 @@ public class HereController {
 		requestGetCoordinatesBaseUri = String.format(requestGetCoordinatesBaseUri, here_app_id, here_app_code, "%s+%s+%s+%s");
 		requestGetTimeBaseUri = String.format(requestGetTimeBaseUri, here_app_id, here_app_code, "&waypoint0=geo!%s,%s&waypoint1=geo!%s,%s&mode=fastest;car;traffic:disabled");
 	}
-
-
+	
 	/**
 	 * 
 	 * @param houseNr1
