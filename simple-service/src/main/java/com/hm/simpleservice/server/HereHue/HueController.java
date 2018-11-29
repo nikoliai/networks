@@ -12,7 +12,7 @@ public class HueController {
 	private String baseURI = "/api/";
 //	private String authorizedUsr = "197ea42c25303cef1a68c4042ed56887/";
 	private String authorizedUsr = "newdeveloper/";
-//	private String ipAddress = "localhost";
+//	private String ipAddress = "10.28.9.122";
 	private String ipAddress = "localhost";
 	private String port = "80";
 	
