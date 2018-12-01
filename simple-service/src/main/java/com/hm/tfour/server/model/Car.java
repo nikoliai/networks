@@ -1,8 +1,4 @@
-package com.hm.simpleservice.server.model;
-
-import org.json.simple.parser.ParseException;
-
-import com.hm.simpleservice.server.HereHue.HereController;
+package com.hm.tfour.server.model;
 
 public class Car {
 

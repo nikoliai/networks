@@ -1,4 +1,4 @@
-package com.hm.simpleservice.server.ui;
+package com.hm.tfour.server.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -18,9 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
-import com.hm.simpleservice.client.ui.ClientPanel;
-import com.hm.simpleservice.server.ServerController;
-import com.hm.simpleservice.server.model.Car;
+import com.hm.tfour.client.ui.ClientPanel;
+import com.hm.tfour.server.ServerController;
+import com.hm.tfour.server.model.Car;
 
 public class ServerCenter {
 
@@ -126,9 +126,9 @@ public class ServerCenter {
 	
 	public static void main(String[] args) {
 		ArrayList<Car> carList = new ArrayList<>();
-		carList.add(new Car(1, new String[] {"9", "Lindenweg", "Gilching", "Germany"}, new String[] {"1", "Kirchenweg", "Gilching", "Germany"}, System.currentTimeMillis() + 3600000));
-		carList.add(new Car(2, new String[] {"9", "Lindenweg", "Gilching", "Germany"}, new String[] {"64", "Lothstraße", "München", "Germany"}, System.currentTimeMillis() + 3600000));
-		carList.add(new Car(3, new String[] {"9", "Lindenweg", "Gilching", "Germany"}, new String[] {"1", "Am bahnhof", "Gilching", "Germany"}, System.currentTimeMillis() + 3600000));
+		carList.add(new Car(1, new String[] {"9", "Hauptstraße", "Hamburg", "Germany"}, new String[] {"1", "Kirchenweg", "Gilching", "Germany"}, System.currentTimeMillis() + 3600000));
+		carList.add(new Car(2, new String[] {"9", "Hauptstraße", "Hamburg", "Germany"}, new String[] {"64", "Lothstraße", "München", "Germany"}, System.currentTimeMillis() + 3600000));
+		carList.add(new Car(3, new String[] {"9", "Hauptstraße", "Hamburg", "Germany"}, new String[] {"1", "Am bahnhof", "Gilching", "Germany"}, System.currentTimeMillis() + 3600000));
 		new ServerCenter(carList);
 	}
 

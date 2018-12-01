@@ -1,4 +1,4 @@
-package com.hm.simpleservice.client.ui;
+package com.hm.tfour.client.ui;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -21,10 +21,10 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 
-import com.hm.simpleservice.server.ServerController;
-import com.hm.simpleservice.server.model.Car;
-import com.hm.simpleservice.server.model.CarUtil;
-import com.hm.simpleservice.server.ressource.RessourceDriverState;
+import com.hm.tfour.server.ServerController;
+import com.hm.tfour.server.model.Car;
+import com.hm.tfour.server.model.CarUtil;
+import com.hm.tfour.server.ressource.RessourceDriverState;
 
 import javax.swing.JRadioButton;
 
@@ -81,7 +81,7 @@ public class ClientPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sendUpdate(CarUtil.getPostRequestJsonString(driver.getID(), Car.State.INACTIVE, new String[] {"", "", "", ""}));
+				sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.INACTIVE, new String[] {"", "", "", ""}));
 				}
 		});
 		
@@ -92,7 +92,7 @@ public class ClientPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sendUpdate(CarUtil.getPostRequestJsonString(driver.getID(), Car.State.FREE, new String[] {"", "", "", ""}));
+				sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.FREE, new String[] {"", "", "", ""}));
 				}
 		});
 		
@@ -103,7 +103,7 @@ public class ClientPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				sendUpdate(CarUtil.getPostRequestJsonString(driver.getID(), Car.State.IN_TIME, driver.getStartAddress()));
+				sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.IN_TIME, driver.getStartAddress()));
 				}
 		});
 		
@@ -190,7 +190,9 @@ public class ClientPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				driver.setStartAddress(new String[] {textField_OverviewCurHnr.getText(), textField_OverviewCurStreet.getText(), textField_OverviewCurCity.getText(), textField_OverviewCurCountry.getText()});
-				sendUpdate(CarUtil.getPostRequestJsonString(driver.getID(), Car.State.IN_TIME, driver.getStartAddress()));
+				if (driver.getState().equals(Car.State.IN_TIME) || driver.getState().equals(Car.State.LATE)) {
+					sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.IN_TIME, driver.getStartAddress()));
+				}
 			}
 		});
 		
@@ -250,7 +252,6 @@ public class ClientPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if (driver.getState() == Car.State.FREE || driver.getState() == Car.State.INACTIVE) {
 					driver.setDestinationAddress(new String[] {textField_OverviewDesHnr.getText(), textField_OverviewDesStreet.getText(), textField_OverviewDesCity.getText(), textField_OverviewDesCountry.getText()});
-				//TODO update des lon lat
 				} else {
 					String[] destination = driver.getDestinationAddress();
 					textField_OverviewCurHnr.setText(destination[0]);

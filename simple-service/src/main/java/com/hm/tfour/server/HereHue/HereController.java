@@ -1,4 +1,4 @@
-package com.hm.simpleservice.server.HereHue;
+package com.hm.tfour.server.HereHue;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -13,22 +13,23 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class HereController {
-	
+
 	private static String here_app_id = "lCp2io17mGlpmfZDl5jY";
 	private static String here_app_code = "VW3eq70qhKoG9Qed65y9Uw";
 	private static String requestGetCoordinatesBaseUri = "https://geocoder.api.here.com/6.2/geocode.json?app_id=%s&app_code=%s&searchtext=%s";
 	private static String requestGetTimeBaseUri = "https://route.api.here.com/routing/7.2/calculateroute.json?app_id=%s&app_code=%s%s";
 
-	//TODO testen mit mehreren %s in base String und nur 1 oder 2 parameter
 	private static String formatCoordinatesUri() {
 		return String.format(requestGetCoordinatesBaseUri, here_app_id, here_app_code, "%s+%s+%s+%s");
 	}
-	
+
 	private static String formatTimeUri() {
+
 		return String.format(requestGetTimeBaseUri, here_app_id, here_app_code, "&waypoint0=geo!%s,%s&waypoint1=geo!%s,%s&mode=fastest;car;traffic:disabled");
-	}
-	
+		}
+
 	/**
+	 * Public um fahrtzeit zwischen zwei zielen mit adresse zu bekommen
 	 * 
 	 * @param houseNr1
 	 * @param street1
@@ -39,9 +40,10 @@ public class HereController {
 	 * @param city2
 	 * @param country2
 	 * @return time as string
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static String calculatingTravelTime(String houseNr1, String street1, String city1, String country1,
-			String houseNr2,String street2, String city2, String country2) throws ParseException{
+	public static String sendTravelTimeRequest(String houseNr1, String street1, String city1, String country1,
+			String houseNr2,String street2, String city2, String country2) throws ParseException, UnsupportedEncodingException{
 
 		Client client = ClientBuilder.newClient();
 
@@ -60,46 +62,28 @@ public class HereController {
 
 		return parseTravelTimeResponse(responseTime);
 	}
-	
-	public static String calculatingTravelTime(String latStart, String lonStart, String latDes, String lonDes) throws ParseException{
-		Client client = ClientBuilder.newClient();
 
-		// time request
-		String responseTime = sendRoutCalculationGetRequest(client, latStart, lonStart, latDes, lonDes);
 
-		client.close();
-
-		return parseTravelTimeResponse(responseTime);
-	}
-
-	public static String[] sendCoordinatesGetRequest(String houseNr, String street, String city, String country) throws ParseException {
-		Client client = ClientBuilder.newClient();
-		String response = sendCoordinatesGetRequest(client, houseNr, street, city, country);
-		client.close();
-		return parseCoordinatesResponse(response);
-	}
-
-	private static String sendCoordinatesGetRequest(Client client, String houseNr, String street, String city, String country) {
+	/**
+	 * Nur der reine request
+	 * 
+	 * @param client
+	 * @param houseNr
+	 * @param street
+	 * @param city
+	 * @param country
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	private static String sendCoordinatesGetRequest(Client client, String houseNr, String street, String city, String country) throws UnsupportedEncodingException {
 		//Create request
-		String requestCoordinates = null;
-		try {
-			requestCoordinates = String.format(formatCoordinatesUri(), URLEncoder.encode(houseNr, "UTF-8"), URLEncoder.encode(street, "UTF-8"), URLEncoder.encode(city, "UTF-8"), URLEncoder.encode(country, "UTF-8"));
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-byte[] ptext = requestCoordinates.getBytes();
-		try {
-			requestCoordinates = new String(ptext, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String requestCoordinates = String.format(formatCoordinatesUri(), URLEncoder.encode(houseNr, "UTF-8"), URLEncoder.encode(street, "UTF-8"), URLEncoder.encode(city, "UTF-8"), URLEncoder.encode(country, "UTF-8"));
 		//Get response
 		return client.target(requestCoordinates).request(MediaType.APPLICATION_JSON).get(String.class);
 	}
-	
+
 	/**
+	 * Nur der reine Request
 	 * 
 	 * @param client
 	 * @param latStart
@@ -130,8 +114,6 @@ byte[] ptext = requestCoordinates.getBytes();
 		try {
 			time = ((JSONObject) ((JSONObject) ((JSONArray) ((JSONObject) responseJson.get("response"))
 					.get("route")).get(0)).get("summary")).get("travelTime").toString();
-
-			// System.out.println("summary travel time: " + trTime);
 		} catch (Exception e) {
 			throw new ParseException(0, responseJson);
 		}

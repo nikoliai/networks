@@ -1,4 +1,6 @@
-package com.hm.simpleservice.server.ressource;
+package com.hm.tfour.server.ressource;
+
+import java.io.UnsupportedEncodingException;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -11,10 +13,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.hm.simpleservice.server.ServerController;
-import com.hm.simpleservice.server.HereHue.HereController;
-import com.hm.simpleservice.server.model.Car;
-import com.hm.simpleservice.server.model.CarUtil;
+import com.hm.tfour.server.ServerController;
+import com.hm.tfour.server.HereHue.HereController;
+import com.hm.tfour.server.model.Car;
+import com.hm.tfour.server.model.CarUtil;
 
 @Path("driver/state")
 public class RessourceDriverState {
@@ -33,19 +35,17 @@ public class RessourceDriverState {
 			e1.printStackTrace();
 		}
 
-		Car driver = CarUtil.findCar(ServerController.getArrayList(), Integer.parseInt(jsonInput.get("id").toString()));
-		System.out.println("Driver ID: " + jsonInput.get("id"));
-
+		Car driver = CarUtil.findCar(ServerController.getCarList(), Integer.parseInt(jsonInput.get("id").toString()));
+		
+		//New state
 		switch ((String) jsonInput.get("state")) {
-		case "FREE":
+		case "FREE": //Must be Car.State.Free.name()
 			driver.setState(Car.State.FREE);
-			System.out.println("Driver state to Free");
-			break;
+			return "200 Ok";
 		case "INACTIVE":
 			driver.setState(Car.State.INACTIVE);
-			System.out.println("Driver state to Inactinve");
-			break;
-		case "IN_TIME":
+			return "200 Ok";
+		case "IN_TIME": //Else Car is on road
 		case "LATE":
 			Object jsonObj = jsonInput.get("location");
 			if (jsonObj instanceof JSONArray) {
@@ -55,36 +55,31 @@ public class RessourceDriverState {
 					newLocation[i] = jsonLocationArray.get(i).toString();
 				}
 
+				//newLocation entries must not be null
 				if (!newLocation[0].equals(null) && !newLocation[1].equals(null) && !newLocation[2].equals(null) && !newLocation[3].equals(null)) {
 					try {
 						String[] desAddress = driver.getDestinationAddress();
 
-						long newTravelTime = Long.parseLong(HereController.calculatingTravelTime(newLocation[0], newLocation[1], newLocation[2], newLocation[3], desAddress[0], desAddress[1], desAddress[2], desAddress[3])) * 1000;
+						//Get travel time in sec
+						long newTravelTime = Long.parseLong(HereController.sendTravelTimeRequest(newLocation[0], newLocation[1], newLocation[2], newLocation[3], desAddress[0], desAddress[1], desAddress[2], desAddress[3]));
 
-						long newStartTime = driver.getDestinationTime() - newTravelTime;
+						long newStartTime = driver.getDestinationTime() - newTravelTime *1000;
 						long currentTime = System.currentTimeMillis();
-						
+
 						if (newStartTime >= currentTime) {
 							driver.setState(Car.State.IN_TIME);
-							System.out.println("Driver state to InTime");
 						} else {
 							driver.setState(Car.State.LATE);
-							System.out.println("Driver state to Late");
 						}
 
 						driver.setStartAddress(newLocation);
-					} catch (ParseException e) {
-						return "444 Wrong Json String";
+						return "Ressource Rest Driver State: 200 Ok";
+					} catch (ParseException | NumberFormatException | UnsupportedEncodingException  e) {
+						return "Ressource Rest Driver State: 400 Wrong Json String";
 					}
-				} else {
-					return "444 Wrong Json String";
 				}
-			} else {
-				return "444 Wrong Json String";
 			}
-			break;
 		}
-		return "200 Ok";
-
+		return "Ressource Rest Driver State: 400 Wrong Json String"; //200 ok could be only send in switch case
 	}
 }
