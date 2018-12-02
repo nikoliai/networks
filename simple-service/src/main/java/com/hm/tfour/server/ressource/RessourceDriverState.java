@@ -19,38 +19,48 @@ import com.hm.tfour.server.model.Car;
 import com.hm.tfour.server.model.CarUtil;
 
 @Path("driver/state")
+/**
+ * Class representing actual state of drivers
+ * @author Olga Nikoliai
+ *
+ */
 public class RessourceDriverState {
 
 	public static final String PATH = "driver/state";
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
+	@POST // calls the function after the post request
+	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.TEXT_PLAIN)
+	/**
+	 * Changes the driver data according to the new information
+	 * @param jsonString new data posted on the own web service
+	 * @return message if if was possible to change the state or not
+	 */
 	public String obtainNewDriverState(String jsonString) {
 		JSONParser parser = new JSONParser();
 		JSONObject jsonInput = null;
 		try {
-			jsonInput = (JSONObject) parser.parse(jsonString);
+			jsonInput = (JSONObject) parser.parse(jsonString);//
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
-
+// car by which the data should be changed
 		Car driver = CarUtil.findCar(ServerController.getCarList(), Integer.parseInt(jsonInput.get("id").toString()));
 		
 		//New state
 		switch ((String) jsonInput.get("state")) {
 		case "FREE": //Must be Car.State.Free.name()
 			driver.setState(Car.State.FREE);
-			return "200 Ok";
+			return "200 Ok"; 
 		case "INACTIVE":
 			driver.setState(Car.State.INACTIVE);
-			return "200 Ok";
-		case "IN_TIME": //Else Car is on road
-		case "LATE":
+			return "200 Ok"; 
+		case "IN_TIME": //the initial status is always in time, then it will be checked if the desired time is realistic
+		case "LATE": // calculate new travel time
 			Object jsonObj = jsonInput.get("location");
 			if (jsonObj instanceof JSONArray) {
 				JSONArray jsonLocationArray = (JSONArray) jsonObj;
-				String[] newLocation = new String[4];
+				String[] newLocation = new String[4]; // get new location
 				for (int i = 0; i < newLocation.length; i++) {
 					newLocation[i] = jsonLocationArray.get(i).toString();
 				}
@@ -63,16 +73,16 @@ public class RessourceDriverState {
 						//Get travel time in sec
 						long newTravelTime = Long.parseLong(HereController.sendTravelTimeRequest(newLocation[0], newLocation[1], newLocation[2], newLocation[3], desAddress[0], desAddress[1], desAddress[2], desAddress[3]));
 
-						long newStartTime = driver.getDestinationTime() - newTravelTime *1000;
+						long diffDesiredTimeAndCalculatedTravTime = driver.getDestinationTime() - newTravelTime *1000;
 						long currentTime = System.currentTimeMillis();
 
-						if (newStartTime >= currentTime) {
+						if (diffDesiredTimeAndCalculatedTravTime >= currentTime) {
 							driver.setState(Car.State.IN_TIME);
 						} else {
 							driver.setState(Car.State.LATE);
 						}
 
-						driver.setStartAddress(newLocation);
+						driver.setStartAddress(newLocation); //change the start address by the driver
 						return "Ressource Rest Driver State: 200 Ok";
 					} catch (ParseException | NumberFormatException | UnsupportedEncodingException  e) {
 						return "Ressource Rest Driver State: 400 Wrong Json String";

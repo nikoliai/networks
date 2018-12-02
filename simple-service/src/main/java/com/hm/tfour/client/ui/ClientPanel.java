@@ -1,18 +1,20 @@
 package com.hm.tfour.client.ui;
 
-import javax.swing.JPanel;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.ws.rs.client.Client;
@@ -25,9 +27,11 @@ import com.hm.tfour.server.ServerController;
 import com.hm.tfour.server.model.Car;
 import com.hm.tfour.server.model.CarUtil;
 import com.hm.tfour.server.ressource.RessourceDriverState;
-
-import javax.swing.JRadioButton;
-
+/**
+ * class representing ui to communicate with the user 
+ * @author Thilo Barth, Olga Nikoliai
+ *
+ */
 public class ClientPanel extends JPanel {
 
 	private Car driver;
@@ -41,7 +45,10 @@ public class ClientPanel extends JPanel {
 	private JTextField textField_OverviewCurCountry;
 	private JLabel lblCurrentState;
 	private JTextField textField_OverviewTime;
-	
+	/**
+	 * ctr for client panel.
+	 * @param driver car to be added to the panel
+	 */
 	public ClientPanel(final Car driver) {
 		this.driver = driver;
 		
@@ -134,10 +141,6 @@ public class ClientPanel extends JPanel {
 		
 		JLabel lblOverviewCurrent = new JLabel("Current address:");
 		panelAddresses.add(lblOverviewCurrent);
-		
-		
-		
-		
 		
 		JPanel panelCur = new JPanel();
 		panelAddresses.add(panelCur);
@@ -261,10 +264,6 @@ public class ClientPanel extends JPanel {
 				}
 			}
 		});
-
-		
-		
-		
 		
 		JLabel lblOverviewTime = new JLabel("Current destination time (yyyy-MM-dd HH:mm:ss):");
 		panelAddresses.add(lblOverviewTime);
@@ -281,7 +280,8 @@ public class ClientPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (driver.getState() == Car.State.FREE || driver.getState() == Car.State.INACTIVE ) {
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				    SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+                            Locale.ENGLISH);
 			        TimeZone tz = TimeZone.getTimeZone("GMT+1");
 					sdf.setTimeZone(tz);
 
@@ -312,9 +312,13 @@ public class ClientPanel extends JPanel {
 	public void updateState() {
 		lblCurrentState.setText(driver.getState().name());
 	}
-	
+/**
+ * Posts new driver state on the on the own web service	
+ * @param message: new data 
+ * @return response to the post request
+ */
 	private String sendUpdate(String message) {
-		Client client = ClientBuilder.newClient();
+		Client client = ClientBuilder.newClient();//client to send the post request
 		WebTarget target = client.target(ServerController.BASE_URI + RessourceDriverState.PATH + "/");
 		String response = target.request().accept(MediaType.TEXT_PLAIN_TYPE)
 				.post(Entity.entity(message, MediaType.APPLICATION_JSON), String.class);

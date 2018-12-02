@@ -51,7 +51,7 @@ public class ServerController {
 	 */
 	private HttpServer startRessourceController() {
 		// create a resource config that scans for JAX-RS resources and providers
-		// in com.example package
+		// in RESSOURCE_PACKAGE package
 		final ResourceConfig rc = new ResourceConfig().packages(RESSOURCE_PACKAGE);
 
 		// create and start a new instance of grizzly http server
@@ -167,15 +167,14 @@ public class ServerController {
 					blinkerList.get(i - 1).setIsRunning(false);
 					blinkerList.set(i - 1, new RedBlinker(i));
 					hueController.postTurnOfOn(i, HueController.HueState.ON);
-					hueController.postNewColor(i, HueColors.ORANGE);
+					hueController.postNewColor(i, HueColors.GREEN);
 					break;
 				case IN_TIME:
 					blinkerList.get(i - 1).setIsRunning(false);
 					blinkerList.set(i - 1, new RedBlinker(i));
 					hueController.postTurnOfOn(i, HueController.HueState.ON);
-					hueController.postNewColor(i, HueColors.GREEN);
+					hueController.postNewColor(i, HueColors.ORANGE);
 					break;
-
 				case LATE:
 					RedBlinker blinker = blinkerList.get(i - 1);
 					if (blinker.getIsStarted() == false) {

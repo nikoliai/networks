@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Represents some util methods for the class Car
  * 
  * @author Thilo Barth
+ * @author Olga Nikoliai
  */
 public class CarUtil {
 	

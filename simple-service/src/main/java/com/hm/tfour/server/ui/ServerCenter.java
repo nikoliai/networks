@@ -21,7 +21,11 @@ import javax.swing.border.EmptyBorder;
 import com.hm.tfour.client.ui.ClientPanel;
 import com.hm.tfour.server.ServerController;
 import com.hm.tfour.server.model.Car;
-
+/**
+ * 
+ * @author Thilo Barth
+ *
+ */
 public class ServerCenter {
 
 	private JFrame frame;
@@ -123,7 +127,10 @@ public class ServerCenter {
 		
 		frame.setVisible(true);
 	}
-	
+	/**
+	 * Initializes the cars with default data and starts ServerSenter
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ArrayList<Car> carList = new ArrayList<>();
 		carList.add(new Car(1, new String[] {"9", "Hauptstraße", "Hamburg", "Germany"}, new String[] {"1", "Kirchenweg", "Gilching", "Germany"}, System.currentTimeMillis() + 3600000));
