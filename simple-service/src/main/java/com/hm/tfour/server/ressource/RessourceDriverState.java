@@ -37,6 +37,7 @@ public class RessourceDriverState {
 	 * @return message if if was possible to change the state or not
 	 */
 	public String obtainNewDriverState(String jsonString) {
+		System.out.println("I am here because smth was posted I suppose. Obtaining new driver state");
 		JSONParser parser = new JSONParser();
 		JSONObject jsonInput = null;
 		try {
@@ -57,6 +58,7 @@ public class RessourceDriverState {
 			return "200 Ok"; 
 		case "IN_TIME": //the initial status is always in time, then it will be checked if the desired time is realistic
 		case "LATE": // calculate new travel time
+			System.out.println("Checking travel time");
 			Object jsonObj = jsonInput.get("location");
 			if (jsonObj instanceof JSONArray) {
 				JSONArray jsonLocationArray = (JSONArray) jsonObj;
@@ -78,8 +80,11 @@ public class RessourceDriverState {
 
 						if (diffDesiredTimeAndCalculatedTravTime >= currentTime) {
 							driver.setState(Car.State.IN_TIME);
+							System.out.println("Comming in time");
 						} else {
 							driver.setState(Car.State.LATE);
+							System.out.println("Being late");
+
 						}
 
 						driver.setStartAddress(newLocation); //change the start address by the driver

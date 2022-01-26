@@ -23,6 +23,8 @@ public class CarUtil {
 	 */
 	public static String createDriverStatePostRequestJsonString(int id, Car.State newState, String[] newLocation) throws IllegalArgumentException {
 		if (newState != null && newLocation != null && newLocation.length == 4) {
+			System.out.println("DEBUG: Creating JSON String:");
+			System.out.println("{\n\"id\":" + id + ",\n\"state\":\"" + newState.name() + "\",\n\"location\":[\"" + newLocation[0] + "\", \"" + newLocation[1] + "\", \"" + newLocation[2] + "\", \"" + newLocation[3] + "\"]}");
 			return "{\n\"id\":" + id + ",\n\"state\":\"" + newState.name() + "\",\n\"location\":[\"" + newLocation[0] + "\", \"" + newLocation[1] + "\", \"" + newLocation[2] + "\", \"" + newLocation[3] + "\"]}";
 		}
 		throw new IllegalArgumentException("Driver State or wrong new location.");

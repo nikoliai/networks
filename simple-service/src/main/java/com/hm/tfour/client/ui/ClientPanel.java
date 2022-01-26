@@ -93,6 +93,7 @@ public class ClientPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
+            	System.out.println("Performing update action");
                 if (sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.INACTIVE,
                         new String[] { "", "", "", "" })).contains("400 Wrong Json String")) {
                     System.err.println("Wrong request.");
@@ -343,9 +344,16 @@ public class ClientPanel extends JPanel {
      */
     private String sendUpdate(String message) {
         Client client = ClientBuilder.newClient();// client to send the post request
+        System.out.println("DEBUG: Sending update to the target:");
+        System.out.println(ServerController.BASE_URI + RessourceDriverState.PATH + "/");
+        System.out.println("DEBUG: Creating POST request with the message:");
+        System.out.println(message);
+
         WebTarget target = client.target(ServerController.BASE_URI + RessourceDriverState.PATH + "/");
         String response = target.request().accept(MediaType.TEXT_PLAIN_TYPE)
                 .post(Entity.entity(message, MediaType.APPLICATION_JSON), String.class);
+        System.out.println("DEBUG: getting responce from server:");
+        System.out.println(response);
         client.close();
         return response;
     }
