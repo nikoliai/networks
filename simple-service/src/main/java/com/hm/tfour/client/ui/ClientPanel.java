@@ -27,6 +27,7 @@ import com.hm.tfour.server.ServerController;
 import com.hm.tfour.server.model.Car;
 import com.hm.tfour.server.model.Car.State;
 import com.hm.tfour.server.model.CarUtil;
+import com.hm.tfour.server.ressource.DriverState;
 import com.hm.tfour.server.ressource.RessourceDriverState;
 
 /**
@@ -343,18 +344,24 @@ public class ClientPanel extends JPanel {
      *            new data
      * @return response to the post request
      */
-    private String sendUpdate(String message) {
+    private String sendUpdate(DriverState driverState) {
         Client client = ClientBuilder.newClient();// client to send the post request
         System.out.println("DEBUG: Sending update to the target:");
         System.out.println(ServerController.BASE_URI + RessourceDriverState.PATH + "/");
         System.out.println("DEBUG: Creating POST request with the message:");
-        System.out.println(message);
+        System.out.println(driverState);
 
         WebTarget target = client.target(ServerController.BASE_URI + RessourceDriverState.PATH + "/");
-        String response = target.request().accept(MediaType.TEXT_PLAIN_TYPE)
-                .post(Entity.entity(message, MediaType.APPLICATION_JSON), String.class);
+        String response = target.request().post(Entity.entity(driverState, MediaType.APPLICATION_JSON), String.class);
+        
+
         System.out.println("DEBUG: getting responce from server:");
         System.out.println(response);
+        
+        
+        String response2 = target.request().accept(MediaType.TEXT_PLAIN_TYPE)
+                .get(String.class);
+        System.out.println(response2);
         client.close();
         return response;
     }

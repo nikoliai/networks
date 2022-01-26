@@ -2,6 +2,8 @@ package com.hm.tfour.server.model;
 
 import java.util.ArrayList;
 
+import com.hm.tfour.server.ressource.DriverState;
+
 /**
  * Represents some util methods for the class Car
  * 
@@ -21,11 +23,13 @@ public class CarUtil {
 	 * @return json String for Post request
 	 * @throws IllegalArgumentException if driver state or newLocation 
 	 */
-	public static String createDriverStatePostRequestJsonString(int id, Car.State newState, String[] newLocation) throws IllegalArgumentException {
+	public static DriverState createDriverStatePostRequestJsonString(int id, Car.State newState, String[] newLocation) throws IllegalArgumentException {
 		if (newState != null && newLocation != null && newLocation.length == 4) {
 			System.out.println("DEBUG: Creating JSON String:");
 			System.out.println("{\n\"id\":" + id + ",\n\"state\":\"" + newState.name() + "\",\n\"location\":[\"" + newLocation[0] + "\", \"" + newLocation[1] + "\", \"" + newLocation[2] + "\", \"" + newLocation[3] + "\"]}");
-			return "{\n\"id\":" + id + ",\n\"state\":\"" + newState.name() + "\",\n\"location\":[\"" + newLocation[0] + "\", \"" + newLocation[1] + "\", \"" + newLocation[2] + "\", \"" + newLocation[3] + "\"]}";
+			//return "{\n\"id\":" + id + ",\n\"state\":\"" + newState.name() + "\",\n\"location\":[\"" + newLocation[0] + "\", \"" + newLocation[1] + "\", \"" + newLocation[2] + "\", \"" + newLocation[3] + "\"]}";
+			String str=String.join(",", newLocation);
+			return new DriverState ( Integer.toString(id), str, newState.name());
 		}
 		throw new IllegalArgumentException("Driver State or wrong new location.");
 	}
