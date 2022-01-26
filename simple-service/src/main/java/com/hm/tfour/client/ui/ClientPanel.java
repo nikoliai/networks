@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.hm.tfour.server.ServerController;
 import com.hm.tfour.server.model.Car;
+import com.hm.tfour.server.model.Car.State;
 import com.hm.tfour.server.model.CarUtil;
 import com.hm.tfour.server.ressource.RessourceDriverState;
 
@@ -123,7 +124,7 @@ public class ClientPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.IN_TIME,
+                if (sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.ON_ROAD,
                         driver.getStartAddress())).contains("400 Wrong Json String")) {
                     System.err.println("Wrong request.");
                 }
@@ -212,7 +213,7 @@ public class ClientPanel extends JPanel {
                         new String[] { textField_OverviewCurHnr.getText(), textField_OverviewCurStreet.getText(),
                                 textField_OverviewCurCity.getText(), textField_OverviewCurCountry.getText() });
                 if (driver.getState().equals(Car.State.IN_TIME) || driver.getState().equals(Car.State.LATE)) {
-                    if (sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.IN_TIME,
+                    if (sendUpdate(CarUtil.createDriverStatePostRequestJsonString(driver.getID(), Car.State.ON_ROAD,
                             driver.getStartAddress())).contains("400 Wrong Json String")) {
                         System.err.println("Wrong request.");
                     }

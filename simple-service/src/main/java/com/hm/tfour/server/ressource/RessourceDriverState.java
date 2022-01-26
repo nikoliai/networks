@@ -16,6 +16,7 @@ import org.json.simple.parser.ParseException;
 import com.hm.tfour.server.ServerController;
 import com.hm.tfour.server.HereHue.HereController;
 import com.hm.tfour.server.model.Car;
+import com.hm.tfour.server.model.Car.State;
 import com.hm.tfour.server.model.CarUtil;
 
 @Path("driver/state")
@@ -57,7 +58,7 @@ public class RessourceDriverState {
 			driver.setState(Car.State.INACTIVE);
 			return "200 Ok"; 
 		case "IN_TIME": //the initial status is always in time, then it will be checked if the desired time is realistic
-		case "LATE": // calculate new travel time
+		case "ON_ROAD": // calculate new travel time
 			System.out.println("Checking travel time");
 			Object jsonObj = jsonInput.get("location");
 			if (jsonObj instanceof JSONArray) {
@@ -97,4 +98,5 @@ public class RessourceDriverState {
 		}
 		return "Ressource Rest Driver State: 400 Wrong Json String"; //200 ok could be only send in switch case
 	}
+
 }

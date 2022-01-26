@@ -45,7 +45,7 @@ public class Car {
  *
  */
 	public enum State {
-		INACTIVE, FREE, IN_TIME, LATE
+		INACTIVE, FREE, IN_TIME, LATE, ON_ROAD
 	}
 
 	public int getID() {
