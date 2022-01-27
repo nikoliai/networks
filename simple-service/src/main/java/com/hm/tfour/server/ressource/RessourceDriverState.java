@@ -33,7 +33,6 @@ import com.hm.tfour.server.model.CarUtil;
  *
  */
 public class RessourceDriverState {
-    private RessourceDriverState ressourceDriverState = RessourceDriverState.getInstance();
 
 	public static final String PATH = "driver/state";
 

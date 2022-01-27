@@ -1,10 +1,12 @@
 package com.hm.tfour.server.ressource;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 
-public class DriverState {
+public class DriverState implements Serializable{
 	private String id;
 	private String state; 
     private String location;
@@ -27,4 +29,7 @@ public class DriverState {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	public DriverState()
+    {
+    }
 }
