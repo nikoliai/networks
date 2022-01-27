@@ -66,7 +66,7 @@ public class HereController {
 		String[] coords2 = parseCoordinatesResponse(response2);
 
 		// time request
-		String responseTime = sendRoutCalculationGetRequest(client, coords1[0], coords1[1], coords2[0], coords2[1]);
+		String responseTime = sendRouteCalculationGetRequest(client, coords1[0], coords1[1], coords2[0], coords2[1]);
 
 		client.close();
 
@@ -102,7 +102,7 @@ public class HereController {
 	 * @param longFinish longitude of the final position of a car
 	 * @return time to get from start in seconds to finish as string
 	 */
-	private static String sendRoutCalculationGetRequest(Client client, String latStart, String longStart, String latFinish, String longFinish) { 
+	private static String sendRouteCalculationGetRequest(Client client, String latStart, String longStart, String latFinish, String longFinish) { 
 		// create request
 		String requestTime = String.format(formatTimeUri(), latStart, longStart, latFinish, longFinish);
 
@@ -131,7 +131,7 @@ public class HereController {
 	}
 	
 /**
- * parses the response from the web service to get coordinates 
+ * Parses the response from the web service to get coordinates 
  * @param response
  * @return latitude and longitude for the address requested by the web service
  * @throws ParseException

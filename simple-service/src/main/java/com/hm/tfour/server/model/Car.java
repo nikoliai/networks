@@ -7,20 +7,11 @@ package com.hm.tfour.server.model;
 public class Car {
 
 	private int id;
-
 	private String[] startAddress;
 	private String[] destinationAddress;
 	private State state;
-	private long destinationTime; //in millis
-/**
- * 
- * @param id of the car (1,2 or 3)
- */
-	public Car(int id) {
-		this.id = id;
-		this.state = State.INACTIVE;
-		this.destinationTime = 0;
-	}
+	private long destinationTime; 
+
 /**
  * 
  * @param id id of the car (1,2 or 3)
@@ -37,7 +28,6 @@ public class Car {
 	}
 /**
  * States of a car
- * @author Olga Nikoliai
  * INACTIVE: car is inactive (driver has a brake)
  * FREE: car is active and free  
  * IN_TIME  car is occupied and will reach the destination in time

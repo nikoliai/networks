@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public class CarUtil {
 	
 	/**
-	 * Creates a json String for the T4 program Rest ressource to post new driver state.
+	 * Creates a json String for the T4 program Rest resource to post new driver state.
 	 * If the new state is FREE or INACTIVE the entries of newLocation could be null.
 	 * The newLocation array must have 4 entries in this order: houseNr, street, city, country.
 	 * 
-	 * @param id of Car
+	 * @param id car id
 	 * @param newState the new state that should be posted.
 	 * @param newLocation must not be null
 	 * @return json String for Post request
